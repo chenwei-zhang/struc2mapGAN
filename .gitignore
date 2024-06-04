@@ -3,6 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+# customized
+checkpoints
+notebooks
+output
+paper_benchmark
+
+
 # C extensions
 *.so
 
