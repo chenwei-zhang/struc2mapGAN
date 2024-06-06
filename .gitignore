@@ -6,7 +6,6 @@ __pycache__/
 
 # customized
 checkpoints
-notebooks
 output
 paper_benchmark
 
