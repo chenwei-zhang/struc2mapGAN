@@ -63,7 +63,7 @@ def resample(chimerax, ref_map, sim_map, sim_map_resample, verbose=False):
 # Make simulation map
 def e2pdb2mrc(pdb, save_path, res, ref_map, normalize=True, verbose=False):
 
-    x, y, z = mrcfile.open(ref_map, mode='r').data.shape
+    # x, y, z = mrcfile.open(ref_map, mode='r').data.shape    # for ref box
     
     # Execute ChimeraX molmap with resolution=2.0
     result = subprocess.run([EMAN, 
@@ -72,7 +72,8 @@ def e2pdb2mrc(pdb, save_path, res, ref_map, normalize=True, verbose=False):
                              '--res', 
                              str(res),
                              '--box',
-                             f'{x},{y},{z}',
+                            #  f'{x},{y},{z}',  # for ref box
+                               '500,500,500'
                              ],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
@@ -91,6 +92,8 @@ def e2pdb2mrc(pdb, save_path, res, ref_map, normalize=True, verbose=False):
         sys.stdout.flush()
         
         print(f'MolMap saved to {save_path}')
+
+    return save_path
 
 
 
@@ -122,17 +125,18 @@ if __name__ == '__main__':
     # print(f'e2pdb2mrc saved to {args.output_mrc}_e2pdb2mrc.mrc')
     
     
-    df_csv = pd.read_csv('../paper_benchmark/inference_data_raw.csv', dtype=str)
+    df_csv = pd.read_csv('../paper_benchmark/inference_data.csv', dtype=str)
     emd_list = df_csv['EMID']
     pdb_list = df_csv['PDBID']
     
     for i in range(len(pdb_list)):
                 
-        pdb = f'../paper_benchmark/test_exp_data/{pdb_list[i]}_ref.pdb'
-        output_mrc = f'../paper_benchmark/test_gan_data/eman_new/{pdb_list[i]}_e2pdb2mrc.mrc'
-        ref_map = f'../paper_benchmark/test_exp_data/emd_{emd_list[i]}.map'
+        pdb = f'../paper_benchmark/data/raw_map_pdb/{pdb_list[i]}_ref.pdb'
+        output_mrc = f'../paper_benchmark/data/e2pdb2mrc_box500/{pdb_list[i]}_e2pdb2mrc.mrc'
+        ref_map = f'../paper_benchmark/data/raw_map_pdb/emd_{emd_list[i]}.map'
         res = 2.0
         
+        # # ref box size
         # sim_map = e2pdb2mrc(
         #         pdb=pdb,
         #         save_path=output_mrc,
@@ -141,13 +145,25 @@ if __name__ == '__main__':
         #         normalize=args.normalize,
         #         verbose=args.verbose,
         #     )
-        sim_map = output_mrc
+        
+        # box size 500
+        sim_map = e2pdb2mrc(
+                pdb=pdb,
+                save_path=output_mrc,
+                res=res,
+                ref_map=None,
+                normalize=args.normalize,
+                verbose=args.verbose,
+            )
         
         # # other resample way
         directory = os.path.dirname(sim_map)
         sim_map_name = os.path.basename(sim_map).split('.')[0]
         sim_map_resample = os.path.join(directory, f'{sim_map_name}_resample.mrc')
-        resample(CHIMERAX_PATH, ref_map, sim_map, sim_map_resample, verbose=False)        
+        resample(CHIMERAX_PATH, ref_map, sim_map, sim_map_resample, verbose=False) 
+        
+        # remove original map
+        os.remove(sim_map)       
     
         print(f'PDB-{pdb_list[i]} | EMDB-{emd_list[i]}: e2pdb2mrc saved to {output_mrc}')
         sys.stdout.flush()
