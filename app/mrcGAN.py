@@ -3,7 +3,7 @@ import os
 import sys
 import subprocess
 from inference import inference 
-from pdb2vol import pdb2vol
+from StructureBlurrer import pdb2vol
 from molmap import molmap
 
 

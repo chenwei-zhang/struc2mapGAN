@@ -8,7 +8,7 @@ __pycache__/
 checkpoints
 output
 paper_benchmark
-
+*.pdf
 
 # C extensions
 *.so

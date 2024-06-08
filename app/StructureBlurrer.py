@@ -1,4 +1,5 @@
 """
+Extract from https://github.com/kiharalab/DiffModeler/blob/main/ops/pdb2vol.py
 pdb2vol.py adopted from BioTEMPy
 """
 
