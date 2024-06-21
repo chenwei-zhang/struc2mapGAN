@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import mrcfile
 import subprocess
+import pandas as pd
 from copy import deepcopy
 import argparse
 
@@ -35,15 +36,34 @@ def write_mrc(file_path, data, header, overwrite=True):
         mrc.header.nzstart = header.nzstart
 
 
+def resample(chimerax, ref_map, sim_map, sim_map_resample, verbose=False):
+    result = subprocess.run([chimerax, '--nogui', 
+                            '--cmd', 
+                            f'open {ref_map}; \
+                            open {sim_map}; \
+                            vol #1 #2 step 1 ; \
+                            vol resample #2 onGrid #1 gridStep 1; \
+                            save {sim_map_resample} #3; \
+                            exit'],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            text=True)
+    if verbose:
+        print(result.stdout)
+        sys.stdout.flush()
+        
+        print(f'Resampled maps saved to {sim_map_resample}')
+
+
 # Make simulation map
-def molmap(pdb, output_mrc, res=2.0, normalize=True, verbose=False):
-    # Execute ChimeraX molmap with resolution=2.0
+def molmap(pdb, output_mrc, res, normalize=True, verbose=False):
+    # Execute ChimeraX molmap with resolution
     result = subprocess.run([CHIMERAX_PATH, '--nogui', 
                             '--cmd', 
                             f'open {pdb}; \
                             molmap #1 {res}; \
-                            vol #2 step 1 ; \
-                            save {output_mrc}_molmap.mrc #2; \
+                            vol #2 step 1; \
+                            save {output_mrc} #2; \
                             exit'],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
@@ -52,17 +72,19 @@ def molmap(pdb, output_mrc, res=2.0, normalize=True, verbose=False):
     # std mean normalization
     if normalize:
         # Read the map
-        simdata, _, simmap_header = read_mrc(f'{output_mrc}_molmap.mrc')
+        simdata, _, simmap_header = read_mrc(output_mrc)
         # Normalize
         norm_data = normalize_map(simdata)
         # Write the normalized map
-        write_mrc(f'{output_mrc}_molmap.mrc', norm_data, simmap_header)
+        write_mrc(output_mrc, norm_data, simmap_header)
             
     if verbose:
         print(result.stdout)
         sys.stdout.flush()
         
-    print(f'MolMap saved to {output_mrc}_molmap.mrc')
+    print(f'MolMap saved to {output_mrc}')
+    
+    return f'{output_mrc}'
 
 
 
@@ -75,12 +97,46 @@ if __name__ == '__main__':
     parser.add_argument('--verbose', action='store_true', default=False, help='Print verbose output')
     args = parser.parse_args()
     
-    molmap(
-        pdb=args.pdb,
-        output_mrc=args.output_mrc,
-        res=args.res,
-        normalize=args.normalize,
-        verbose=args.verbose,
-    )
+    # molmap(
+    #     pdb=args.pdb,
+    #     output_mrc=args.output_mrc,
+    #     res=args.res,
+    #     normalize=args.normalize,
+    #     verbose=args.verbose,
+    # )
     
-    print(f'MolMap saved to {args.output_mrc}_molmap.mrc')
+    # print(f'MolMap saved to {args.output_mrc}_molmap.mrc')
+    
+     
+    df_csv = pd.read_csv('../paper_benchmark/inference_data.csv', dtype=str)
+    emd_list = df_csv['EMID']
+    pdb_list = df_csv['PDBID']
+    resolution_list = df_csv['Resolution']
+    
+    for i in range(len(pdb_list)):
+                
+        pdb = f'../paper_benchmark/data/raw_map_pdb/{pdb_list[i]}_ref.pdb'
+        output_mrc = f'../paper_benchmark/data/molmap_ogres/{pdb_list[i]}_molmap_ogres.mrc'
+        ref_map = f'../paper_benchmark/data/raw_map_pdb/emd_{emd_list[i]}.map'
+        res = resolution_list[i]
+        
+        sim_map = molmap(
+                pdb=pdb,
+                output_mrc=output_mrc,
+                res=res,
+                normalize=args.normalize,
+                verbose=args.verbose,
+            )
+        
+        directory = os.path.dirname(sim_map)
+        sim_map_name = os.path.basename(sim_map).split('.')[0]
+        sim_map_resample = os.path.join(directory, f'{sim_map_name}_resample.mrc')
+        resample(CHIMERAX_PATH, ref_map, sim_map, sim_map_resample, verbose=False) 
+        
+        # # remove original map
+        os.remove(sim_map)       
+    
+        print(f'PDB-{pdb_list[i]} | EMDB-{emd_list[i]}: molmap saved to {output_mrc}')
+        sys.stdout.flush()            
+    
+    
