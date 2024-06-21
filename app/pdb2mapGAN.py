@@ -138,25 +138,25 @@ if __name__ == "__main__":
         
         print('Resampling maps...')
         
-        # # reshape GAN maps
-        # resample(args.chimerax, args.ref_map, sim_map, gan_map, sim_map_resample, gan_map_resample, args.verbose)
+        # reshape GAN maps
+        resample(args.chimerax, args.ref_map, sim_map, gan_map, sim_map_resample, gan_map_resample, args.verbose)
 
-        # # reshape experimental maps
-        ref_map = args.ref_map
-        ref_map_resample = os.path.join(directory, f'{os.path.basename(ref_map).split(".")[0]}_resample.mrc')
+        # # # reshape experimental maps
+        # ref_map = args.ref_map
+        # ref_map_resample = os.path.join(directory, f'{os.path.basename(ref_map).split(".")[0]}_resample.mrc')
         
-        subprocess.run([args.chimerax, '--nogui', 
-                        '--cmd', 
-                        f'open {gan_map}; \
-                        open {ref_map}; \
-                        vol #1 #2 step 1 ; \
-                        vol resample #2 onGrid #1 gridStep 1; \
-                        save {ref_map_resample} #3; \
-                        exit'],
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        text=True)
+        # subprocess.run([args.chimerax, '--nogui', 
+        #                 '--cmd', 
+        #                 f'open {gan_map}; \
+        #                 open {ref_map}; \
+        #                 vol #1 #2 step 1 ; \
+        #                 vol resample #2 onGrid #1 gridStep 1; \
+        #                 save {ref_map_resample} #3; \
+        #                 exit'],
+        #                 stdout=subprocess.PIPE,
+        #                 stderr=subprocess.PIPE,
+        #                 text=True)
         
-        print('Resampling maps...')
-        print(f'Resampled reference map saved to {ref_map_resample}')
+        # print('Resampling maps...')
+        # print(f'Resampled reference map saved to {ref_map_resample}')
     
