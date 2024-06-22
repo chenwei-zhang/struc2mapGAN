@@ -73,7 +73,7 @@ def resample(chimerax, ref_map, sim_map, gan_map, sim_map_resample, gan_map_resa
         
         
         
-def mrcGAN(args: Namespace):
+def struc2mapGAN(args: Namespace):
     # Convert pdb to map by physical simulation
     
     if args.mode == 'pdb2vol':
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     
     args = parse_arguments()
     
-    directory, sim_map_name, gan_map_name = mrcGAN(args)
+    directory, sim_map_name, gan_map_name = struc2mapGAN(args)
     
     if args.ref_map is not False:
         
