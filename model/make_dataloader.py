@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/cwzhang/project/struc2mapGAN')
+sys.path.append('../../struc2mapGAN')
 
 import os
 import numpy as np
