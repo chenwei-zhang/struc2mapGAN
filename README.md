@@ -32,8 +32,15 @@ lightning==2.2.3
 ## Installation
 
 ```bash
+# Create conda environment
+conda create -n struc2mapGAN python=3.10
+conda activate struc2mapGAN
+
+# CLone git repo
+git clone https://github.com/chenwei-zhang/struc2mapGAN.git
 cd struc2mapGAN
 
+# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -43,5 +50,4 @@ cd struc2mapGAN/app
 ```
 
 ## Contact
-
 Chenwei Zhang (cwzhang@cs.ubc.ca)
