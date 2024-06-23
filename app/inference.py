@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/cwzhang/project/mrc_gan')
+sys.path.append('/home/cwzhang/project/struc2mapGAN')
 
 import os
 from argparse import ArgumentParser, Namespace

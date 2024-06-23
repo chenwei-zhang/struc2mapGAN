@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append('/home/cwzhang/project/mrc_gan')
+sys.path.append('/home/cwzhang/project/struc2mapGAN')
 import os
 # Set NCCL_BLOCKING_WAIT to 1 to enable more descriptive errors and potentially prevent the hanging.
 os.environ["TORCH_NCCL_BLOCKING_WAIT"] = "1"
