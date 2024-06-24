@@ -393,7 +393,7 @@ def pdb2vol(
         else:
             blurred_data = blur_map(map_data, resolution, sigma_coeff)
     else:
-        print("Warning: Blurring will not be performed because the resolution is too high w.r.t. the voxel size.")
+        # print("Warning: Blurring will not be performed because the resolution is too high w.r.t. the voxel size.")
         blurred_data = map_data  # no blurring
 
     blurred_data = resample_by_box_size(blurred_data, dims)
@@ -414,7 +414,7 @@ def pdb2vol(
     if return_data:
         return blurred_data
     
-    print(f'pdb2vol saved to {output_mrc}_pdb2vol.mrc')
+    # print(f'pdb2vol saved to {output_mrc}_pdb2vol.mrc')
 
     
 

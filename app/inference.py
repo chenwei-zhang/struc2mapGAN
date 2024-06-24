@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/cwzhang/project/struc2mapGAN')
+sys.path.append('../../struc2mapGAN')
 
 import os
 from argparse import ArgumentParser, Namespace
@@ -73,8 +73,9 @@ def inference(map, ckpt, batch_size, num_workers, save_dir):
 
     # Write the enhanced map
     new_map_path = write2map_gan(raw_map=map, nn_pred=pred_map, save_dir=save_dir)
-        
-    print(f'The GAN modified map saved to {new_map_path}')
+
+    return new_map_path
+
         
         
 if __name__ == "__main__":
@@ -87,12 +88,13 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='.', help='Path to save the enhanced map')
     args = parser.parse_args()
     
-    inference(
-        args.map,
-        args.ckpt,
-        args.batch_size,
-        args.num_workers,
-        args.save_dir
-        )
+    new_map_path = inference(
+                        args.map,
+                        args.ckpt,
+                        args.batch_size,
+                        args.num_workers,
+                        args.save_dir
+                        )
     
+    print(f'The GAN modified map saved to {new_map_path}')
 
