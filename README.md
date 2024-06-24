@@ -1,5 +1,7 @@
 <div align="center">
+
 # struc2mapGAN: Synthesizing High-resolution Experimental-like Cryo-EM Density Maps with Generative Adversarial Networks
+
 </div>
 
 ## About struc2mapGAN
@@ -66,3 +68,9 @@ python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/24-0517-1329
 
 ## Contact
 Chenwei Zhang (cwzhang@cs.ubc.ca)
+
+
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
