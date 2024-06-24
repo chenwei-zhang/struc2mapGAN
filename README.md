@@ -47,7 +47,22 @@ pip install -r requirements.txt
 ## Usage
 ```bash
 cd struc2mapGAN/app
+
+# Generate maps
+python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/24-0517-132907-last.ckpt --output_mrc ../example/8i2h_struc2mapGAN.mrc
+
+# If resample to experimental map's box size
+python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/24-0517-132907-last.ckpt --output_mrc ../example/8i2h_struc2mapGAN.mrc --ref_map ../example/emd_35136.map
 ```
+
+### Commands
+
+- --pdb <pdb_path>  Path to the input pdb file
+- --ckpt <ckpt_path>  Path to the trained checkpoint
+- --output_mrc <output_path> Path to the output map
+- --ref_map <map_path> Path to the reference map file if resample to the original experimental map's box size
+
+
 
 ## Contact
 Chenwei Zhang (cwzhang@cs.ubc.ca)
