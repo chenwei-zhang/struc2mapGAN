@@ -7,7 +7,7 @@
 ## About struc2mapGAN
 struc2mapGAN is a novel data-driven method that employs a generative adversarial network (GAN) with a U-Net++ architecture as the generator to produce high-resolution experimental-like density maps from molecular structures (PDB files). 
 
-![vida_model](./assets/GAN-architecture.png)   
+![struc2map_model](./assets/GAN-architecture.png)   
 
 
 ## Pre-required software
@@ -67,7 +67,8 @@ python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/24-0517-1329
 
 
 ## Contact
-Chenwei Zhang (cwzhang@cs.ubc.ca)
+<!-- Chenwei Zhang (cwzhang@cs.ubc.ca) -->
+TBA
 
 
 
