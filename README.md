@@ -51,10 +51,10 @@ pip install -r requirements.txt
 cd struc2mapGAN/app
 
 # Generate maps
-python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/24-0517-132907-last.ckpt --output_mrc ../example/8i2h_struc2mapGAN.mrc
+python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/struc2mapGAN.ckpt --output_mrc ../example/8i2h_struc2mapGAN.mrc
 
 # If resample to experimental map's box size
-python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/24-0517-132907-last.ckpt --output_mrc ../example/8i2h_struc2mapGAN.mrc --ref_map ../example/emd_35136.map
+python struc2mapGAN.py --pdb ../example/8i2h_ref.pdb --ckpt ../ckpt/struc2mapGAN.ckpt --output_mrc ../example/8i2h_struc2mapGAN.mrc --ref_map ../example/emd_35136.map
 ```
 
 ### Commands
