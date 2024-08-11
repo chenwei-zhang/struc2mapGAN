@@ -16,9 +16,6 @@ struc2mapGAN is a novel data-driven method that employs a generative adversarial
 Python 3 : 
 https://www.python.org/downloads/  
 
-PyTorch 2.2 : 
-https://pytorch.org/
-
 UCSF ChimeraX :
 https://www.cgl.ucsf.edu/chimerax/download.html
 ```
@@ -26,7 +23,7 @@ https://www.cgl.ucsf.edu/chimerax/download.html
 
 ## Dependencies
 ```
-numpy==1.26.4
+numpy<2.0
 torch==2.2.2
 lightning==2.2.3
 ```
@@ -45,6 +42,12 @@ cd struc2mapGAN
 # Install dependencies
 pip install -r requirements.txt
 ```
+
+## Download Checkpoints
+In case ```git clone``` did not successfully download the pretrained model thereby casuing running errors, please go through this [Google Drive Link](https://drive.google.com/file/d/1xReT4R_CeYzCE8u31MES2fTjMk0MflNj/view?usp=drive_link) to download the pretrained model, and make sure to place the downloaded checkpoint in the correct path (```struc2mapGAN/ckpt/struc2mapGAN.ckpt```).
+
+
+
 
 ## Usage
 ```bash
