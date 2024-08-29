@@ -1,16 +1,20 @@
 <!-- <div align="center"> -->
-
 # Struc2mapGAN: Synthesizing High-resolution Experimental-like Cryo-EM Density Maps with Generative Adversarial Networks
-
 <!-- </div> -->
 
-## About struc2mapGAN
+
+[![arXiv](https://img.shields.io/badge/arXiv-2407.17674-b31b1b.svg)](https://arxiv.org/abs/2407.17674)
+
+
+
+## About Struc2mapGAN
 Struc2mapGAN is a novel data-driven method that employs a generative adversarial network (GAN) with a U-Net++ architecture as the generator to produce high-resolution experimental-like density maps from molecular structures (PDB files). 
 
 <!-- ![struc2mapGAN](./assets/GAN-architecture.png)    -->
 <div align="center">
-    <img src="./assets/GAN-architecture.png" alt="struc2map_model" width="66%" />
+    <img src="./assets/GAN-architecture.png" alt="struc2mapGAN" width="55%" />
 </div>
+
 
 
 ## Pre-required software
