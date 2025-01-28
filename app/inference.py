@@ -13,10 +13,34 @@ from tqdm import tqdm
 from model.gan import GeneratorNestedUNet, Discriminator
 from model.make_dataloader import GAN_Pred_Dataset
 from utils.map2cube import reconstruct_map, write2map_gan
+from copy import deepcopy
+from scipy.ndimage import zoom
+
 
 torch.set_float32_matmul_precision('high')
 
 
+
+def resample_map_to_1A(input_map, target_voxel=1.0):
+    with mrcfile.open(input_map) as mrc:
+        current_voxel = mrc.voxel_size.x
+        zoom_factor = current_voxel / target_voxel
+        data = mrc.data
+        resampled_data = zoom(data, zoom_factor, order=3)  # order=3 for cubic interpolation
+        
+    return resampled_data
+
+
+def minmaxNorm(mrc_data):
+        # normalize by percentile value
+        mrc_data = deepcopy(mrc_data)   
+        
+        ### Min-Max normalization ###
+        mrc_data = (mrc_data - np.min(mrc_data)) / (np.max(mrc_data) - np.min(mrc_data))
+
+        return mrc_data
+    
+    
 
 class GAN(L.LightningModule):
     def __init__(self,
@@ -33,16 +57,16 @@ class GAN(L.LightningModule):
 
 def inference(map, ckpt, batch_size, num_workers, save_dir):
     # Load data
-    mapdata = mrcfile.open(map, mode='r').data
+    mapdata = resample_map_to_1A(map)
+    mapdata = minmaxNorm(mapdata)
     mapshape = mapdata.shape
     
+    # Create dataloader
     pred_dataset = GAN_Pred_Dataset(map=mapdata)
     pred_dataloader = DataLoader(pred_dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False)
 
     # Load model
-    model = GAN.load_from_checkpoint(ckpt)
-    # model = GAN()
-    
+    model = GAN.load_from_checkpoint(ckpt)    
     
     # Move model to GPU if available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -63,7 +87,13 @@ def inference(map, ckpt, batch_size, num_workers, save_dir):
     pred_data =  concatenated_cubes.squeeze(dim=1).numpy()
     
     # Cubes to the map
-    pred_map = reconstruct_map(pred_data, image_shape=mapshape, box_size=32, core_size=20)
+    pred_map = reconstruct_map(
+        pred_data, 
+        image_shape=mapshape, 
+        box_size=32, 
+        core_size=20)
+    
+    pred_map = minmaxNorm(pred_map)
 
     assert pred_map.shape == mapshape, "The shape of the predicted map is not the same as the input map."
     

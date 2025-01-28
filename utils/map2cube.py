@@ -118,14 +118,18 @@ def write2map_gan(raw_map, nn_pred, save_dir):
         new_map.set_data(nn_pred)
         new_map.header.origin = raw_header.origin
         new_map.header.cella = raw_header.cella
+        new_map.header.cellb = raw_header.cellb
+        new_map.header.mapc = raw_header.mapc
+        new_map.header.mapr = raw_header.mapr
+        new_map.header.maps = raw_header.maps
         new_map.header.nxstart = raw_header.nxstart
         new_map.header.nystart = raw_header.nystart
         new_map.header.nzstart = raw_header.nzstart
-        new_map_voxelsize = new_map.voxel_size
-        new_map_gridsize = new_map.data.shape
+    #     new_map_voxelsize = new_map.voxel_size
+    #     new_map_gridsize = new_map.data.shape
         
-    assert new_map_gridsize ==  raw_gridsize, "The grid size of GAN map mismatched with input sim map"
-    assert new_map_voxelsize ==  raw_voxelsize, "The voxel size of GAN map mismatched with input sim map"
+    # assert new_map_gridsize ==  raw_gridsize, "The grid size of GAN map mismatched with input sim map"
+    # assert new_map_voxelsize ==  raw_voxelsize, "The voxel size of GAN map mismatched with input sim map"
     
     return new_map_path
     
