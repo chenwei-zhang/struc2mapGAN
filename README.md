@@ -42,7 +42,7 @@ lightning==2.2.3
 conda create -n struc2mapGAN python=3.10
 conda activate struc2mapGAN
 
-# CLone git repo
+# Clone git repo
 git clone https://github.com/chenwei-zhang/struc2mapGAN.git
 cd struc2mapGAN
 
@@ -50,10 +50,11 @@ cd struc2mapGAN
 pip install -r requirements.txt
 ```
 
-## Download Checkpoints
-In case ```git clone``` did not successfully download the pretrained model thereby casuing running errors, please go through this [Google Drive Link](https://drive.google.com/file/d/1xReT4R_CeYzCE8u31MES2fTjMk0MflNj/view?usp=drive_link) to download the pretrained model, and make sure to place the downloaded checkpoint in the correct path (```struc2mapGAN/ckpt/struc2mapGAN.ckpt```).
-
-
+## Download Checkpoint
+```bash
+# Download the checkpoint and save to ./ckpt/
+wget --content-disposition -P ./ckpt https://osf.io/download/397v2/
+```
 
 
 ## Usage
