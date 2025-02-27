@@ -6,11 +6,13 @@ __pycache__/
 
 # customized
 checkpoints
+ckpt
 output
 paper_benchmark
 paper_figs
 *.pdf
 *html
+
 
 # C extensions
 *.so
